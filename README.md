@@ -35,12 +35,23 @@ Parameters : --img        => Specify location path to aml_upgrade_package.img
 For newer amlogic boards, use adnl_flash_tool.sh :
 
 ```bash
-Usage: ./adnl_flash_tool.sh -i <path-to-image>
+Usage: ./adnl_flash_tool.sh -p <path-to-image>
+
+Amlogic DNL burn package tool V[1.2] at Nov  1 2019
+options:
+  -p <package path>             (MustBe)Specify amlogic upgrade package path
+  -s <specific device>          (Optional)Specify a DNL USB serialno, provide either
+  -c <check burn ipackage>      (Optional)0 or 1, and default 0 to NO crc check image first
+  -r <reboot after burn>        (Optional)0 or 1, and default 0 to NOT reboot after burn successful
+  -e <erase flash>            	 (Optional)0 or 1, and default 1 to erase whole flash chip
+  -b <erase boot>            	 (Optional)0 or 1, and default 1 to erase_bootloader 
+  -t <device change timeout>    (Optional)unit is second, default 8, -t 0 will no timeout
+
 ```
 
-For burning into sdcard, use adnl_flash_tool.sh :
+For burning into sdcard, use sdcard_burn_tool.sh :
 
 ```bash
-Usage: ./aml-flash-tool/sdcard_burn_tool.sh -d </dev/sdX> -i <path-to-image>
+Usage: ./sdcard_burn_tool.sh -d </dev/sdX> -i <path-to-image>
 
 ```
