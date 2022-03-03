@@ -3,11 +3,8 @@
 set -e -o pipefail
 
 BASE=$(dirname "$(readlink -fm "$0")")
-AMLOGIC_TOOL="$BASE/flash-tool.sh"
 
 RULES_DIR="$BASE/tools/_install_/"
-INSTALL_DIR="/usr/local/bin"
-
 
 DISTRIB=$(cat /etc/lsb-release | grep "DISTRIB_ID" | awk -F "=" '{print $2}')
 DISTRIB_RELEASE=$(cat /etc/lsb-release | grep "DISTRIB_RELEASE" | awk -F "=" '{print $2}')
@@ -62,7 +59,7 @@ warning_msg() {
 }
 
 if [ "$DISTRIB" != "Ubuntu" ] \
-   || ! [[ "$DISTRIB_RELEASE" =~ "12" || "$DISTRIB_RELEASE" =~ "14" || "$DISTRIB_RELEASE" =~ "16" || "$DISTRIB_RELEASE" =~ "19" || "$DISTRIB_RELEASE" =~ "19" || "$DISTRIB_RELEASE" =~ "20" ]] ; then
+   || ! [[ "$DISTRIB_RELEASE" =~ "12" || "$DISTRIB_RELEASE" =~ "14" || "$DISTRIB_RELEASE" =~ "16" || "$DISTRIB_RELEASE" =~ "19" || "$DISTRIB_RELEASE" =~ "19" || "$DISTRIB_RELEASE" =~ "20" || "$DISTRIB_RELEASE" =~ "21" ]] ; then
 	warning_msg "This flash tool just support Ubuntu LTS now, other distributions haven't been verified!"
 	read -p "Continue any way? [No/yes] " answer
 	if [[ "$answer" != "yes" && "$answer" != "Yes" ]]; then
@@ -79,7 +76,7 @@ if [[ "$DISTRIB_RELEASE" =~ "12" ]]; then
 	RULE="$RULES_DIR/70-persistent-usb-ubuntu12.rules"
 	sudo cp $RULE /etc/udev/rules.d
 	sudo sed -i s/OWNER=\"amlogic\"/OWNER=\"`whoami`\"/g /etc/udev/rules.d/$(basename $RULE)
-elif [[ "$IGNORE_CHECK" == "yes" || "$DISTRIB_RELEASE" =~ "14" || "$DISTRIB_RELEASE" =~ "16" || "$DISTRIB_RELEASE" =~ "18" || "$DISTRIB_RELEASE" =~ "19" || "$DISTRIB_RELEASE" =~ "20" ]]; then
+elif [[ "$IGNORE_CHECK" == "yes" || "$DISTRIB_RELEASE" =~ "14" || "$DISTRIB_RELEASE" =~ "16" || "$DISTRIB_RELEASE" =~ "18" || "$DISTRIB_RELEASE" =~ "19" || "$DISTRIB_RELEASE" =~ "20" || "$DISTRIB_RELEASE" =~ "21" ]]; then
 	RULE="$RULES_DIR/70-persistent-usb-ubuntu14.rules"
 	sudo cp $RULE /etc/udev/rules.d
 else
@@ -88,9 +85,5 @@ else
 fi
 
 sudo udevadm control --reload-rules
-
-echo "Installing flash-tool..."
-mkdir -p $INSTALL_DIR
-sudo ln -fs $AMLOGIC_TOOL $INSTALL_DIR/$(basename $AMLOGIC_TOOL)
 
 echo "Done!"
