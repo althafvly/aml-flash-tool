@@ -4,19 +4,52 @@ This is the flash-tool for Amlogic platforms.
 
 ----------------------------
 
-This is the flash-tool for Amlogic platforms.
 This flash-tool script rely on update linux tool that need firstly to be installed.
-Please read the file tools/_install_/README before to proceed here.
 
 ## Installation
 
-Please run INSTALL.sh to install dependency and usb rules or UNINSTALL.sh to remove.
+To use this tool, you must manually install the required dependencies and set up the USB udev rules.
 
+### 1. Install Dependencies
+
+First, install the common dependencies required for all versions:
 ```bash
-./INSTALL
+sudo apt update
+sudo apt install libusb-dev git parted lib32z1 lib32stdc++6 libusb-0.1-4 libusb-1.0-0-dev libusb-1.0-0 ccache pv base-files linux-base
+sudo update-ccache-symlinks
 ```
 
-After that run aml_flash_tool.sh , it will give you quick help :
+Then, install the specific `ncurses` libraries depending on your OS and version:
+
+#### Ubuntu
+
+**For Ubuntu (up to 23.10):**
+```bash
+sudo apt install libncurses5 lib32ncurses5
+```
+
+**For Ubuntu (24.04 and newer):**
+```bash
+sudo apt install libncurses6 lib32ncurses6
+```
+
+#### Debian
+
+**For Debian 10 & 11:**
+```bash
+sudo apt install libncurses5 lib32ncurses5
+```
+
+**For Debian 12 & 13:**
+```bash
+sudo apt install libncurses6 lib32ncurses6
+```
+
+### 2. Install USB udev Rules
+
+Download and apply the necessary udev rules so the tool can communicate with your device via USB: https://github.com/M0Rf30/android-udev-rules#android-udev-rules
+
+After installing, run `aml_flash_tool.sh`. It will give you quick help:
 
 ```bash
 Usage      : ./aml_flash_tool.sh --img=/path/to/aml_upgrade_package.img> --parts=<all|none|bootloader|dtb|logo|recovery|boot|system|..> [--wipe] [--reset=<y|n>] [--soc=<m8|axg|gxl|txlx|g12a>] [efuse-file=/path/to/file/location] [bootloader|dtb|logo|boot|...-file=/path/to/file/partition] [--password=/path/to/password.bin]
